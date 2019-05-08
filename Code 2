@@ -48,12 +48,7 @@ void dispenseDrink(int number) {
   switch (number) {
 
     case 1:
-    digitalWrite(pump1,HIGH);
-    delay (15000); // 60000 for 98 milliliters
-    digitalWrite(pump1,LOW);
-    digitalWrite(pump2,HIGH);
-    delay (15000);
-    digitalWrite(pump2,LOW); 
+    	 pump(60, 40, 0, 0, false, 20);
       break;
 
     case 2:
@@ -89,8 +84,20 @@ void dispenseDrink(int number) {
 
 }
 
+void partsPump(int parts1, int parts2, int parts3, int parts4, boolean hasPowder, int totalSeconds) {
 
-void pump(int percentPump1, int percentPump2, int percentPump3, int percentPump4, boolean hasPowder, int totalSeconds) {
+     int totalParts = parts1 + parts2 + parts3 + parts4;
+
+     double percentPump1 = parts1 / totalParts;
+     double percentPump2 = parts2 / totalParts;
+     double percentPump2 = parts3 / totalParts;
+     double percentPump2 = parts4 / totalParts;
+
+     pump(percentPump1, percentPump2, percentPump3, percentPump4, hasPowder, totalSeconds);
+
+}
+
+void pump(double percentPump1, double percentPump2, double percentPump3, double percentPump4, boolean hasPowder, int totalSeconds) {
 
     totalSeconds = totalSeconds * 1000;
     double pumpTime1 = totalSeconds * (percentPump1 / 100.0);
