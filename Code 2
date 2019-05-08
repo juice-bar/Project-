@@ -28,6 +28,9 @@ byte colPins[COLS] = {31, 33, 35};
 
 Keypad useKeypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
+int servoPin = 10;
+Servo myservo;
+
 void setup() {
   Serial.begin(9600);
   lcd.begin(16, 2);
@@ -38,7 +41,8 @@ void setup() {
   pinMode(pump2, OUTPUT);
   pinMode(pump3, OUTPUT);
   pinMode(pump4, OUTPUT);
-  pinMode(pump5,OUTPUT);
+  pinMode(pump5, OUTPUT);
+  myservo.attach(10);
 }
 
 void dispenseDrink(int number) {
@@ -48,7 +52,7 @@ void dispenseDrink(int number) {
   switch (number) {
 
     case 1:
-    	 pump(60, 40, 0, 0, false, 20);
+      pump(25, 25, 25, 25, false, 20);
       break;
 
     case 2:
@@ -84,43 +88,50 @@ void dispenseDrink(int number) {
 
 }
 
-void partsPump(int parts1, int parts2, int parts3, int parts4, boolean hasPowder, int totalSeconds) {
-
-     int totalParts = parts1 + parts2 + parts3 + parts4;
-
-     double percentPump1 = parts1 / totalParts;
-     double percentPump2 = parts2 / totalParts;
-     double percentPump2 = parts3 / totalParts;
-     double percentPump2 = parts4 / totalParts;
-
-     pump(percentPump1, percentPump2, percentPump3, percentPump4, hasPowder, totalSeconds);
-
-}
+//void partsPump(int parts1, int parts2, int parts3, int parts4, boolean hasPowder, int totalSeconds) {
+//
+//     int totalParts = parts1 + parts2 + parts3 + parts4;
+//
+//     double percentPump1 = parts1 / totalParts;
+//     double percentPump2 = parts2 / totalParts;
+//     double percentPump2 = parts3 / totalParts;
+//     double percentPump2 = parts4 / totalParts;
+//
+//     pump(percentPump1, percentPump2, percentPump3, percentPump4, hasPowder, totalSeconds);
+//
+//}
 
 void pump(double percentPump1, double percentPump2, double percentPump3, double percentPump4, boolean hasPowder, int totalSeconds) {
 
-    totalSeconds = totalSeconds * 1000;
-    double pumpTime1 = totalSeconds * (percentPump1 / 100.0);
-    double pumpTime2 = totalSeconds * (percentPump2 / 100.0);
-    double pumpTime3 = totalSeconds * (percentPump3 / 100.0);
-    double pumpTime4 = totalSeconds * (percentPump4 / 100.0);
+  totalSeconds = totalSeconds * 1000;
+  double pumpTime1 = totalSeconds * (percentPump1 / 100.0);
+  double pumpTime2 = totalSeconds * (percentPump2 / 100.0);
+  double pumpTime3 = totalSeconds * (percentPump3 / 100.0);
+  double pumpTime4 = totalSeconds * (percentPump4 / 100.0);
 
-    digitalWrite(pump1,HIGH);
-    delay (pumpTime1);
-    digitalWrite(pump1,LOW);
-    digitalWrite(pump2,HIGH);
-    delay (pumpTime2);
-    digitalWrite(pump2,LOW); 
-    digitalWrite(pump3,HIGH);
-    delay (pumpTime3);
-    digitalWrite(pump3,LOW); 
-    digitalWrite(pump3,HIGH);
-    delay (pumpTime3);
-    digitalWrite(pump3,LOW);
+  digitalWrite(pump1, HIGH);
+  delay (pumpTime1);
+  digitalWrite(pump1, LOW);
+  digitalWrite(pump2, HIGH);
+  delay (pumpTime2);
+  digitalWrite(pump2, LOW);
+  digitalWrite(pump3, HIGH);
+  delay (pumpTime3);
+  digitalWrite(pump3, LOW);
+  digitalWrite(pump4, HIGH);
+  delay (pumpTime4);
+  digitalWrite(pump4, LOW);
 
-    if(hasPowder) {
-         // Dispense powder here //
-    }
+  if (hasPowder) {
+    myservo.write(0);              // tell servo to go to position in variable 'pos'
+    delay(400);
+    myservo.write(180);
+    delay(400);
+    myservo.write(0);              // tell servo to go to position in variable 'pos'
+    delay(400);
+    myservo.write(180);
+    delay(400);
+  }
 
 }
 
