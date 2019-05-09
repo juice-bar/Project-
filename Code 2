@@ -10,11 +10,12 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 int number = NULL;
 const byte ROWS = 4;
 const byte COLS = 3;
-int pump1 = 2;
-int pump2 = 3;
-int pump3 = 4;
-int pump4 = 5;
-int pump5 = 6;
+int pump1 = 2; //Water
+int pump2 = 3; //Gatorade
+int pump3 = 4; //Sprite
+int pump4 = 5; //Orange Juice
+int powderStirrer = 6;
+int mixer = 7;
 
 char keys[ROWS][COLS] = {
   {'1', '2', '3'},
@@ -41,8 +42,9 @@ void setup() {
   pinMode(pump2, OUTPUT);
   pinMode(pump3, OUTPUT);
   pinMode(pump4, OUTPUT);
-  pinMode(pump5, OUTPUT);
+  pinMode(powderStirrer, OUTPUT);
   myservo.attach(10);
+  pinMode(mixer, OUTPUT);
 }
 
 void dispenseDrink(int number) {
@@ -52,37 +54,46 @@ void dispenseDrink(int number) {
   switch (number) {
 
     case 1:
-      pump(25, 25, 25, 25, false, 20);
+      pump(100, 0, 0, 0, true, 12);
       break;
 
     case 2:
-
+      pump(100, 0, 0, 0, true, 12);
       break;
 
     case 3:
-
+      pump(100, 0, 0, 0, true, 12);
       break;
 
     case 4:
-
+      pump(100, 0, 0, 0, true, 12);
       break;
 
     case 5:
+      pump(100, 0, 0, 0, true, 12);
       break;
 
     case 6:
+      pump(100, 0, 0, 0, true, 12);
       break;
 
     case 7:
+      pump(100, 0, 0, 0, true, 12);
       break;
 
     case 8:
+      pump(100, 0, 0, 0, true, 12);
       break;
 
     case 9:
+      pump(100, 0, 0, 0, true, 12);
       break;
 
     case 10:
+      digitalWrite(mixer, HIGH);
+      delay(3500);
+      digitalWrite(mixer, LOW);
+      delay(500);
       break;
   }
 
@@ -123,14 +134,14 @@ void pump(double percentPump1, double percentPump2, double percentPump3, double 
   digitalWrite(pump4, LOW);
 
   if (hasPowder) {
-    myservo.write(0);              // tell servo to go to position in variable 'pos'
-    delay(400);
-    myservo.write(180);
-    delay(400);
-    myservo.write(0);              // tell servo to go to position in variable 'pos'
-    delay(400);
-    myservo.write(180);
-    delay(400);
+    int i = 0;
+    while (i < 5) {
+      digitalWrite(powderStirrer, HIGH);
+      delay(25);
+      digitalWrite(powderStirrer, LOW);
+      delay(250);
+      i++;
+    }
   }
 
 }
@@ -145,6 +156,7 @@ void loop() {
     lcd.setCursor(0, 1);
     lcd.print("drink number");
   }
+
 
   else if (number != NULL && number != 12) {
     lcd.clear();
